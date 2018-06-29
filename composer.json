@@ -1,0 +1,22 @@
+{
+    "name": "jeurboy/simple-object-converter",
+    "description": "Class for mapping large and complex object or varible into smaller object",
+    "require": {
+        "php": "^7.0"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "~6.2.0"
+    },
+    "authors": [
+      {
+        "name": "Pornprasith Mahasith",
+        "email": "jeurboy@hotmail.com"
+      }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jeurboy\\SimpleObjectConverter\\": "src/"
+        }
+    }
+}
