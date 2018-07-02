@@ -2,7 +2,7 @@
 
 namespace Jeurboy\SimpleObjectConverter;
 
-class Parser {
+class SchemaParser {
     protected $schema;
 
     public function echo() {
@@ -86,10 +86,10 @@ class ParsedObjectArray {
     }
 
     public function getParsedObject(string $key) : ?ParsedObject {
-        return $this->ArrayOfParsedObject[$key];
+        return @$this->ArrayOfParsedObject[$key];
     }
     public function getParsedObjectChild(string $key) : ?ParsedObjectArray {
-        return $this->getParsedObject($key)->child_field;
+        return @$this->getParsedObject($key)->child_field;
     }
 
     public function isDefaultDefined(string $key) : bool {

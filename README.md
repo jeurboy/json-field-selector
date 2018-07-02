@@ -1,1 +1,1 @@
-# json-field-selector
+# object-field-selector
