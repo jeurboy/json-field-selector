@@ -1,5 +1,5 @@
 {
-    "name": "jeurboy/simple-object-converter",
+    "name": "jeurboy/object-field-selector",
     "description": "Class for mapping large and complex object or varible into smaller object",
     "require": {
         "php": "^7.0"
