@@ -5,8 +5,12 @@ namespace Jeurboy\SimpleObjectConverter;
 class DataParser {
     private $_is_debug = false;
 
+    public function __construct(){
+        $this->setDebug(false);
+    }
+
     public function isDebug() : bool {
-        return $this->_is_debug;
+        return ($this->_is_debug === true)? true : false;
     }
 
     public function setDebug(bool $bool) {
@@ -38,7 +42,7 @@ class DataParser {
         $return = [];
         if (( is_array($all_data) || is_object($all_data)) ) {
             if ( is_object($all_data) ) {
-                if ($this->isDebug()) {
+                if ($this->isDebug() === true) {
                     print "================= Class Model =================\n";
                     $this->_debug($field_name, $layout, $all_data);
                     print "=================================================\n";
@@ -61,7 +65,7 @@ class DataParser {
             // Sequencial array
             else if ( $this->isAssoc($all_data) == false ) {
                 foreach ($all_data as $data) {
-                    if ($this->isDebug()) {
+                    if ($this->isDebug() === true) {
                         print ">>>>>>>>>>>>>>>> Array >>>>>>>>>>>>>>>>\n";
                         $this->_debug($field_name, $layout, $all_data);
                         print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
@@ -80,7 +84,7 @@ class DataParser {
             // Hash array
             else {
                 foreach ($all_data as $key_name => $data) {
-                    if ($this->isDebug()) {
+                    if ($this->isDebug() === true) {
                         print "================= Hash Array =================\n";
                         $this->_debug($field_name, $layout, $all_data);
                         print "=================================================\n";
@@ -104,7 +108,9 @@ class DataParser {
         else {
             // print "================= String =================: ".$field_name." : ".$all_data."\n";
 
-            $this->_debug($field_name, $layout, $all_data);
+            if ($this->isDebug() === true) {
+                $this->_debug($field_name, $layout, $all_data);
+            }
             if (
                 //model have field
                 ( !empty($layout) ) &&
