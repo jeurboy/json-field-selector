@@ -3,7 +3,17 @@
 namespace Jeurboy\SimpleObjectConverter;
 
 class DataParser {
-    public function getOutput($data, ParsedObjectArray $parse_layout){
+    private $_is_debug = false;
+
+    public function isDebug() : bool {
+        return $this->_is_debug;
+    }
+
+    public function setDebug(bool $bool) {
+        $this->_is_debug = $bool;
+    }
+
+    public function getOutput($data, ParsedObjectArray $parse_layout) {
         $return = [];
         foreach ($data as $key => $value) {
             if (is_array($data)) {
@@ -28,9 +38,11 @@ class DataParser {
         $return = [];
         if (( is_array($all_data) || is_object($all_data)) ) {
             if ( is_object($all_data) ) {
-                // print "================= Class Model =================\n";
-                // $this->_debug($field_name, $layout, $all_data);
-                // print "=================================================\n";
+                if ($this->isDebug()) {
+                    print "================= Class Model =================\n";
+                    $this->_debug($field_name, $layout, $all_data);
+                    print "=================================================\n";
+                }
 
                 if($layout->isDefaultDefined($field_name) ) {
                     return $all_data;
@@ -49,14 +61,15 @@ class DataParser {
             // Sequencial array
             else if ( $this->isAssoc($all_data) == false ) {
                 foreach ($all_data as $data) {
-                    // print ">>>>>>>>>>>>>>>> Array >>>>>>>>>>>>>>>>\n";
-                    // $this->_debug($field_name, $layout, $all_data);
-                    // print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
+                    if ($this->isDebug()) {
+                        print ">>>>>>>>>>>>>>>> Array >>>>>>>>>>>>>>>>\n";
+                        $this->_debug($field_name, $layout, $all_data);
+                        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
+                    }
 
                     if(empty($layout->getParsedObjectChild($field_name)) && !$layout->isDefaultDefined($field_name)) { continue; }
 
                     $return_each_record = $this->parseApiOutput($data,  $layout->getParsedObjectChild($field_name));
-                    // print_r($return_each_record);
                     if(!empty($return_each_record )) $return[] = $return_each_record ;
                 }
 
@@ -67,9 +80,11 @@ class DataParser {
             // Hash array
             else {
                 foreach ($all_data as $key_name => $data) {
-                    // print "================= Hash Array =================\n";
-                    // $this->_debug($field_name, $layout, $all_data);
-                    // print "=================================================\n";
+                    if ($this->isDebug()) {
+                        print "================= Hash Array =================\n";
+                        $this->_debug($field_name, $layout, $all_data);
+                        print "=================================================\n";
+                    }
 
                     if(!empty( $layout->getParsedObjectChild($field_name))) {
                         $value = $this->parseApiOutput($data, $layout->getParsedObjectChild($field_name), $key_name);
