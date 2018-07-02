@@ -1,8 +1,8 @@
-Object field selector for PHP Object
+Field selector for PHP Object
 =============================
 
 ## Description
-The library for filter complex array/hash or object and return the actual fields you want to use. 
+The library for filter complex array/hash or object and return the actual fields you want to use.
 
 If you have a large variables contained with unused values which not necessary to used. The library will helps by filter out all the unused fields and left your fields on return variable.
 
@@ -68,7 +68,7 @@ If you have nested Array just pass .(Dot) in your schema.
             'eee' => "hello holy",
         ]
     ];
-    
+
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
     print_r($return);
@@ -160,3 +160,5 @@ Array
 
 )
 ```
+
+You can see all test case in example/example.php files.

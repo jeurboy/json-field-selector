@@ -4,35 +4,40 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Compos
 use Jeurboy\SimpleObjectConverter\SchemaParser;
 use Jeurboy\SimpleObjectConverter\DataParser;
 
-// testSimple();
-// testSimpleWithSubfieldWithSetDefault();
-// testSimpleWithSubfieldAndNotSetDefault();
-// testMultiLevel();
-// testForWard();
-// testBackWard();
+testSimple();
+testSimpleWithSubfieldWithSetDefault();
+testSimpleWithSubfieldAndNotSetDefault();
+testMultiLevel();
+testForWard();
+testBackWard();
 
-// testGetOutput();
-// testGetOutput2();
-// testGetOutput3();
-// testGetOutput4();
-// testGetOutput5();
-// testGetOutput6();
+testGetOutput1();
+testGetOutput2();
+testGetOutput3();
+testGetOutput4();
+testGetOutput5();
+testGetOutput6();
 testGetOutput7();
+testGetOutput8();
+testGetOutput9();
+testGetOutput10();
 
-function testGetOutput(){
+function testGetOutput1(){
     $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
     $parser->addSchema("test1");
     $token = $parser->getParsedSchema();
 
     $data = [
-        'test1' => "11234"
+        'test1' => "11234",
+        'test2' => "22222"
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1\n";
     print_r($return);
 }
 
@@ -46,12 +51,12 @@ function testGetOutput2(){
             'eee' => "hello holy",
         ]
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
-
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.eee\n";
     print_r($return);
 }
 function testGetOutput3(){
@@ -65,12 +70,13 @@ function testGetOutput3(){
             'fff' => "hello holy",
         ]
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1\n";
     print_r($return);
 }
 function testGetOutput4(){
@@ -87,12 +93,13 @@ function testGetOutput4(){
             'fff' => "hello holy", // Not see
         ]
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.eee\n";
     print_r($return);
 }
 
@@ -112,12 +119,13 @@ function testGetOutput5(){
             ],
         ]
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.hello\n";
     print_r($return);
 }
 function testGetOutput6(){
@@ -140,15 +148,48 @@ function testGetOutput6(){
             ]
         ],
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.hello.world,test1.hello.siri,test1.test2.ok\n";
     print_r($return);
 }
 function testGetOutput7(){
+    $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
+    $parser->addSchema("test1.hello.siri.from");
+    $token = $parser->getParsedSchema();
+
+    $data = [
+        'test1' => [
+
+            "hello" => [
+                ["world" => "is_not enough"],
+                "siri"  => [
+                    "from" => [ "steve_job", "wozniak" ]
+                ]
+            ],
+            "ok"    => "google1",
+
+            'test2' => [
+                "hello" => "world2",
+                "ok"    => "google2",
+            ]
+        ],
+    ];
+
+    $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
+    $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.hello.siri.from\n";
+    print_r($return);
+}
+
+function testGetOutput8(){
     $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
     $parser->addSchema("test1.hello.siri.nothave");
     $token = $parser->getParsedSchema();
@@ -170,14 +211,64 @@ function testGetOutput7(){
             ]
         ],
     ];
-    print "================= Input Model =================\n";
-    print_r( $data);
-    print_r( $token);
+    $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
+    $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.hello.siri.nothave\n";
+    print_r($return);
+}
+function testGetOutput9(){
+    $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
+    $parser->addSchema("test1.hello.world");
+    $token = $parser->getParsedSchema();
+
+    $data = [
+        'test1' => [
+
+            "hello" => [
+                ["world" => "is_not enough"],
+                "siri"  => [
+                    "from" => [ "steve_job", "wozniak" ]
+                ]
+            ],
+            "ok"    => "google1",
+
+            'test2' => [
+                "hello" => "world2",
+                "ok"    => "google2",
+            ]
+        ],
+    ];
 
     $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
     $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1.hello.world\n";
     print_r($return);
 }
+function testGetOutput10(){
+    $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
+    $parser->addSchema("test1");
+    $token = $parser->getParsedSchema();
+
+    $data = [
+        ["test1" => 'aa'],
+        ["test1" => 'bb'],
+    ];
+
+    $DataParser = new Jeurboy\SimpleObjectConverter\DataParser();
+    $return = $DataParser->getOutput($data, $token);
+
+    print "================= Example =================\n";
+    print_r( $data );
+    print "Schema = test1\n";
+    print_r($return);
+}
+
 
 function testSimple(){
     $parser = new Jeurboy\SimpleObjectConverter\SchemaParser();
