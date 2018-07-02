@@ -22,19 +22,14 @@ class DataParser {
         return $return;
     }
 
-    private function parseApiOutput($all_data, ?ParsedObjectArray $layout, $field_name = '') {
+    private function parseApiOutput( $all_data, ?ParsedObjectArray $layout, ?string $field_name = '') {
         if( empty($layout) ) return $all_data;
 
         $return = [];
         if (( is_array($all_data) || is_object($all_data)) ) {
-
             if ( is_object($all_data) ) {
                 // print "================= Class Model =================\n";
-                // print_r($layout);
-                // print  "\n";
-                // print  $field_name."\n";
-                // print_r($all_data);
-                // print  "\n";
+                // $this->_debug($field_name, $layout, $all_data);
                 // print "=================================================\n";
 
                 if($layout->isDefaultDefined($field_name) ) {
@@ -55,9 +50,7 @@ class DataParser {
             else if ( $this->isAssoc($all_data) == false ) {
                 foreach ($all_data as $data) {
                     // print ">>>>>>>>>>>>>>>> Array >>>>>>>>>>>>>>>>\n";
-                    // print "field_name : ".$field_name."\n";
-                    // print_r($layout->getParsedObjectChild($field_name));
-                    // print_r($data);
+                    // $this->_debug($field_name, $layout, $all_data);
                     // print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
 
                     if(empty($layout->getParsedObjectChild($field_name)) && !$layout->isDefaultDefined($field_name)) { continue; }
@@ -70,16 +63,12 @@ class DataParser {
                 if(count($return) > 0)
                     return $return;
             }
+
             // Hash array
             else {
                 foreach ($all_data as $key_name => $data) {
                     // print "================= Hash Array =================\n";
-                    // print $field_name."::".$key_name."\n";
-                    // // print  "layout\n";
-                    // print_r($layout);
-                    // // print  "DATA\n";
-                    // print_r($data);
-                    // // print  "\n";
+                    // $this->_debug($field_name, $layout, $all_data);
                     // print "=================================================\n";
 
                     if(!empty( $layout->getParsedObjectChild($field_name))) {
@@ -87,10 +76,8 @@ class DataParser {
 
                         if(!empty($value)) $return[$key_name] = $value;
                     } else if ($layout->isDefaultDefined($field_name)) {
-                        // print "Default\n";
                         $return[$key_name] = $this->parseApiOutput($data, null , $key_name);
                     } else if ($layout->isDefaultDefined($key_name)) {
-                        // print "Default\n";
                         $return[$key_name] = $this->parseApiOutput($data, null , $key_name);
                     }
                 }
@@ -101,8 +88,8 @@ class DataParser {
         // Normal case output
         else {
             // print "================= String =================: ".$field_name." : ".$all_data."\n";
-            // print  $layout->isDefaultDefined($field_name)."\n";
-            // print_r($all_data);
+
+            $this->_debug($field_name, $layout, $all_data);
             if (
                 //model have field
                 ( !empty($layout) ) &&
@@ -119,5 +106,18 @@ class DataParser {
     {
         if (array() === $arr) return false;
         return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    private function _debug(string $field, ?ParsedObjectArray $layout, $data) {
+        print  "layout\n";
+        print_r($layout);
+        print  "\n";
+
+        print  "field_name\n";
+        print  $field."\n";
+
+        print  "data\n";
+        print_r($data);
+        print  "\n";
     }
 }
