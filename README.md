@@ -21,14 +21,14 @@ For a deeper knowledge of how to use this package, follow this index:
 You can install the package via `composer require` command:
 
 ```shell
-composer require jeurboy/object-field-selector:dev-master
+composer require jeurboy/object-field-selector
 ```
 
 Or simply add it to your composer.json dependences and run `composer update`:
 
 ```json
 "require": {
-    "jeurboy/object-field-selector": "dev-master"
+    "jeurboy/object-field-selector": "*"
 }
 ```
 # Usage
