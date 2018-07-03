@@ -1,6 +1,9 @@
 Field selector for PHP Object
 =============================
-
+[![Latest Stable Version](https://poser.pugx.org/jeurboy/object-field-selector/version)](https://packagist.org/packages/jeurboy/object-field-selector)
+[![Total Downloads](https://poser.pugx.org/jeurboy/object-field-selector/downloads)](https://packagist.org/packages/jeurboy/object-field-selector)
+[![Monthly Downloads](https://poser.pugx.org/jeurboy/object-field-selector/d/monthly)](https://packagist.org/packages/jeurboy/object-field-selector)
+[![Daily Downloads](https://poser.pugx.org/jeurboy/object-field-selector/d/daily)](https://packagist.org/packages/jeurboy/object-field-selector)
 ## Description
 The library for filter complex array/hash or object and return the actual fields you want to use.
 
