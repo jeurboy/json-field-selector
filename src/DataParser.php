@@ -21,13 +21,13 @@ class DataParser {
         $return = [];
         foreach ($data as $key => $value) {
             if (is_array($data)) {
-                if ( $ret = $this->parseApiOutput($data[$key], $parse_layout, $key)) {
+                if ( $ret = $this->parseOutput($data[$key], $parse_layout, $key)) {
                     $return[$key] = $ret;
                 }
             }
 
             if (is_object($data)) {
-                if($ret = $this->parseApiOutput($data->{$key}, $parse_layout, $key)) {
+                if($ret = $this->parseOutput($data->{$key}, $parse_layout, $key)) {
                     $return->{$key} = $ret;
                 }
             }
@@ -36,7 +36,7 @@ class DataParser {
         return $return;
     }
 
-    private function parseApiOutput( $all_data, ?ParsedObjectArray $layout, ?string $field_name = '') {
+    private function parseOutput( $all_data, ?ParsedObjectArray $layout, ?string $field_name = '') {
         if( empty($layout) ) return $all_data;
 
         $return = [];
@@ -52,7 +52,7 @@ class DataParser {
                     return $all_data;
                 } else {
                     foreach ($layout[$field_name] as $key => $value) {
-                        $return[$key] = $this->parseApiOutput($all_data->{$key}, $layout->getParsedObjectChild($field_name), $key);
+                        $return[$key] = $this->parseOutput($all_data->{$key}, $layout->getParsedObjectChild($field_name), $key);
                     }
 
                     // Skip record if no field match
@@ -73,7 +73,7 @@ class DataParser {
 
                     if(empty($layout->getParsedObjectChild($field_name)) && !$layout->isDefaultDefined($field_name)) { continue; }
 
-                    $return_each_record = $this->parseApiOutput($data,  $layout->getParsedObjectChild($field_name));
+                    $return_each_record = $this->parseOutput($data,  $layout, $field_name);
                     if(!empty($return_each_record )) $return[] = $return_each_record ;
                 }
 
@@ -91,13 +91,13 @@ class DataParser {
                     }
 
                     if(!empty( $layout->getParsedObjectChild($field_name))) {
-                        $value = $this->parseApiOutput($data, $layout->getParsedObjectChild($field_name), $key_name);
+                        $value = $this->parseOutput($data, $layout->getParsedObjectChild($field_name), $key_name);
 
                         if(!empty($value)) $return[$key_name] = $value;
                     } else if ($layout->isDefaultDefined($field_name)) {
-                        $return[$key_name] = $this->parseApiOutput($data, null , $key_name);
+                        $return[$key_name] = $this->parseOutput($data, null , $key_name);
                     } else if ($layout->isDefaultDefined($key_name)) {
-                        $return[$key_name] = $this->parseApiOutput($data, null , $key_name);
+                        $return[$key_name] = $this->parseOutput($data, null , $key_name);
                     }
                 }
                 return $return;
