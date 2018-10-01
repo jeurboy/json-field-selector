@@ -17,22 +17,28 @@ class DataParser {
         $this->_is_debug = $bool;
     }
 
-    public function getOutput($data, ParsedObjectArray $parse_layout) {
+    public function getOutput($datas, ParsedObjectArray $parse_layout) {
         $return = [];
-        foreach ($data as $key => $value) {
-            if (is_array($data)) {
-                if ( $ret = $this->parseOutput($data[$key], $parse_layout, $key)) {
-                    $return[$key] = $ret;
-                }
-            }
 
-            if (is_object($data)) {
-                if($ret = $this->parseOutput($data->{$key}, $parse_layout, $key)) {
-                    $return->{$key} = $ret;
+        if ( !$this->isAssoc($datas) ) {
+            foreach ($datas as $data) {
+                $return[] = $this->getOutput($data, $parse_layout);
+            }
+        } else {
+            foreach ($datas as $key => $value) {
+                if (is_array($datas)) {
+                    if ( $ret = $this->parseOutput($datas[$key], $parse_layout, $key)) {
+                        $return[$key] = $ret;
+                    }
+                }
+
+                else if (is_object($datas)) {
+                    if($ret = $this->parseOutput($datas->{$key}, $parse_layout, $key)) {
+                        $return->{$key} = $ret;
+                    }
                 }
             }
         }
-
         return $return;
     }
 
