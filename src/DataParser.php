@@ -22,7 +22,9 @@ class DataParser {
 
         if ( !$this->isAssoc($datas) ) {
             foreach ($datas as $data) {
-                $return[] = $this->getOutput($data, $parse_layout);
+                $parse_data = $this->getOutput($data, $parse_layout);
+
+                if (!empty($parse_data)) $return[] = $this->getOutput($data, $parse_layout);
             }
         } else {
             foreach ($datas as $key => $value) {
